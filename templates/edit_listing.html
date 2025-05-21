@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Listing - One Stop Cars & Trucks LLC{% endblock %}
+
+{% block content %}
+    <section class="form-section">
+        <h2>Edit Car Listing</h2>
+        <form method="POST" action="{{ url_for('edit_listing', car_id=car.id) }}" enctype="multipart/form-data" class="car-form">
+            <div class="form-group">
+                <label for="make">Make:</label>
+                <input type="text" id="make" name="make" value="{{ car.make }}" required>
+            </div>
+            <div class="form-group">
+                <label for="model">Model:</label>
+                <input type="text" id="model" name="model" value="{{ car.model }}" required>
+            </div>
+            <div class="form-group">
+                <label for="year">Year:</label>
+                <input type="number" id="year" name="year" value="{{ car.year }}" required min="1900" max="{{ 'now' | datetimeformat('%Y') }}">
+            </div>
+            <div class="form-group">
+                <label for="price">Price ($):</label>
+                <input type="number" id="price" name="price" step="0.01" value="{{ car.price }}" required min="0">
+            </div>
+            <div class="form-group">
+                <label for="mileage">Mileage:</label>
+                <input type="number" id="mileage" name="mileage" value="{{ car.mileage }}" required min="0">
+            </div>
+            <div class="form-group">
+                <label for="color">Color:</label>
+                <input type="text" id="color" name="color" value="{{ car.color if car.color else '' }}">
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" rows="5">{{ car.description if car.description else '' }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="image_file">Current Image:</label>
+                {% if car.image_filename %}
+                    <img src="{{ url_for('static', filename='images/' + car.image_filename) }}" alt="{{ car.make }}" width="150"><br>
+                    <span>{{ car.image_filename }}</span>
+                {% else %}
+                    <span>No image uploaded.</span>
+                {% endif %}
+                <label for="image_file" style="margin-top: 10px;">Upload New Image (optional):</label>
+                <input type="file" id="image_file" name="image_file" accept="image/*">
+            </div>
+            <button type="submit" class="btn">Update Listing</button>
+        </form>
+    </section>
+{% endblock %}
