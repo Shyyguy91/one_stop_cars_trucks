@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <section id="home" class="hero">
+        <div class="container">
+            <h2>Find Your Dream Car Today!</h2>
+            <p>Explore our wide selection of new and pre-owned vehicles at One Stop Cars & Trucks LLC.</p>
+            <a href="#inventory" class="btn">View Inventory</a>
+        </div>
+    </section>
+
+    <section id="inventory" class="inventory-section">
+        <h2>Our Inventory</h2>
+        <div class="car-listings">
+            {% for car in cars %}
+                <div class="car-card">
+                    <img src="{{ url_for('static', filename='images/' + (car.image_filename if car.image_filename else 'default_car.jpg')) }}" alt="{{ car.make }} {{ car.model }}">
+                    <h3>{{ car.year }} {{ car.make }} {{ car.model }}</h3>
+                    <p>Mileage: {{ "{:,.0f}".format(car.mileage) }} miles</p>
+                    <p>Color: {{ car.color if car.color else 'N/A' }}</p>
+                    <p class="price">${{ "{:,.2f}".format(car.price) }}</p>
+                    <p class="description">{{ car.description[:100] }}...</p>
+                    <a href="#" class="btn">Details</a> <div class="social-share">
+                         <p>Share this car:</p>
+                         <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url_root }}#car-{{ car.id }}" target="_blank" class="social-icon facebook">Facebook</a>
+                         <a href="https://twitter.com/intent/tweet?url={{ request.url_root }}#car-{{ car.id }}&text=Check%20out%20this%20{{ car.year }}%20{{ car.make }}%20{{ car.model }}%20at%20One%20Stop%20Cars%20%26%20Trucks!" target="_blank" class="social-icon twitter">Twitter</a>
+                         </div>
+                </div>
+            {% else %}
+                <p>No cars currently in inventory. Check back soon!</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section id="about" class="about-section">
+        <h2>About One Stop Cars & Trucks LLC</h2>
+        <p>Welcome to One Stop Cars & Trucks LLC! We are a family-owned dealership dedicated to providing a hassle-free and enjoyable car buying experience...</p>
+        <p>Our mission is to help you find the perfect vehicle that fits your needs and budget, offering a wide selection of quality new and pre-owned cars and trucks.</p>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <h2>Contact Us</h2>
+        <p>Have questions? We'd love to hear from you!</p>
+        <form class="contact-form" action="#" method="POST">
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <textarea placeholder="Your Message" rows="5"></textarea>
+            <button type="submit" class="btn">Send Message</button>
+        </form>
+    </section>
+{% endblock %}
